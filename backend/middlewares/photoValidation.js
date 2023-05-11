@@ -30,7 +30,17 @@ const photoUpdateValidation = () => {
     ]
 }
 
+const commentValidation = () => {
+    //para evitar comentário com texto vazio
+    return [
+        body("comment")
+        .isString()
+        .withMessage("O comentário é obrigatório")
+    ]
+}
+
 module.exports = {
     photoInsertValidation,
-    photoUpdateValidation
+    photoUpdateValidation,
+    commentValidation
 }
