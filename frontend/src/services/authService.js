@@ -9,7 +9,7 @@ const register = async (data) => {
     .then((res) => res.json()) //transforma a resposta em json
     .catch((err) => err); //pega possíveis erros da requisição e nos retorna
 
-    if(res){ //backend retorna id e token do usuário
+    if(res._id){ //backend retorna id e token do usuário
         localStorage.setItem("user", JSON.stringify(res))
     }
 
@@ -34,7 +34,7 @@ const login = async(user) => {
     
     const res = await fetch(api + "/users/login", config).then((res) => res.json()).catch((err) => err)
 
-    if(res){
+    if(res._id){
       localStorage.setItem("user", JSON.stringify(res))
     }
 
