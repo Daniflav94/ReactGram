@@ -9,7 +9,7 @@ const register = async (data) => {
     .then((res) => res.json())
     .catch((err) => err);
 
-    if(res){
+    if(res){ //backend retorna id e token do usuário
         localStorage.setItem("user", JSON.stringify(res))
     }
 
@@ -20,8 +20,14 @@ const register = async (data) => {
   }
 };
 
+//Logout
+const logout = () => {
+  localStorage.removeItem("user")
+}
+
 const authService = {
-    register
+    register,
+    logout,
 }
 
 export default authService

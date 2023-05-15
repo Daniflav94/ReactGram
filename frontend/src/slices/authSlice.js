@@ -11,9 +11,10 @@ const initialState = {
 };
 
 //Register user and sign in
-export const register = createAsyncThunk(
+export const register = createAsyncThunk( 
+  //nome para a função segue essa convenção, 2º argumento é a função assíncrona do service
   "auth/register",
-  async (user, thunkAPI) => {
+  async (user, thunkAPI) => { //thunkAPI permite parar a execução e identificar um erro da api
     const data = await authService.register(user);
 
     //check for errors
@@ -21,14 +22,19 @@ export const register = createAsyncThunk(
       return thunkAPI.rejectWithValue(data.errors[0]); //rejeita a requisição em caso de erro e exibe o primeiro erro
     }
 
-    return data;
+    return data; //retorna o usuário cadastrado
   }
 );
 
-export const authSlice = createSlice({
+//Logout
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout()
+})
+
+export const authSlice = createSlice({ //recebe um nome que permite extrair valores a partir dele
   name: "auth",
-  initialState,
-  reducers: {
+  initialState, //estados iniciais
+  reducers: { 
     reset: (state) => {
       //resseta todos os estados
       state.loading = false;
@@ -36,7 +42,7 @@ export const authSlice = createSlice({
       state.success = false;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder) => { //vai trabalhar com os estados atuais de cada requisição
     builder
       .addCase(register.pending, (state) => {
         state.loading = true;
@@ -52,7 +58,13 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.user = null;
-      });
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.user = null; //limpar o usuário após logout
+      })
   },
 });
 
