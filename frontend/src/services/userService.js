@@ -22,7 +22,22 @@ const updateProfile = async(data, token) => {
 
     try {
         const res = await fetch(api + "/users/", config).then((res) => res.json()).catch((err) => err)
+
+        return res        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//Get user details
+const getUserDetails = async(id) => {
+    const config = requestConfig("GET")
+
+    try {
+        const res = await fetch(api + "/users/" + id, config).then((res) => res.json()).catch((err) => err)
+
         return res
+        
     } catch (error) {
         console.log(error)
     }
@@ -30,7 +45,8 @@ const updateProfile = async(data, token) => {
 
 const userService = {
     profile,
-    updateProfile
+    updateProfile,
+    getUserDetails
 }
 
 export default userService
